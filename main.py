@@ -1,3 +1,4 @@
+import os
 from flask import Flask, request
 import requests
 
@@ -18,8 +19,9 @@ def send_telegram_message(message):
 @app.route("/<path:path>")
 def catch_all(path):
     full_url = request.url
-    send_telegram_message(f"🌐 Accessed: {full_url}")
-    return f"OK. This access was logged and reported to Telegram.\n{full_url}"
+    send_telegram_message(f"🌐 Someone accessed: {full_url}")
+    return f"✅ Access logged and reported to Telegram.\n\n{full_url}"
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    port = int(os.environ.get("PORT", 5000))  # Get the port from environment
+    app.run(host="0.0.0.0", port=port)  
