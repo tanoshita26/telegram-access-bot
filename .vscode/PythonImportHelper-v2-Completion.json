@@ -38,7 +38,16 @@
         "kind": 2,
         "importPath": "main",
         "description": "main",
-        "peekOfCode": "def send_telegram_message(message):\n    url = f\"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage\"\n    data = {\n        \"chat_id\": CHAT_ID,\n        \"text\": message\n    }\n    requests.post(url, data=data)\n@app.route(\"/\", defaults={'path': ''})\n@app.route(\"/<path:path>\")\ndef catch_all(path):",
+        "peekOfCode": "def send_telegram_message(chat_id, message):\n    url = f\"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage\"\n    data = {\"chat_id\": chat_id, \"text\": message}\n    requests.post(url, data=data)\n# ✅ Call Hugging Face GPT-2 model for a response\ndef generate_gpt_response(prompt):\n    try:\n        url = \"https://api-inference.huggingface.co/models/gpt2\"\n        headers = {\"Accept\": \"application/json\"}\n        payload = {\"inputs\": prompt}",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "generate_gpt_response",
+        "kind": 2,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "def generate_gpt_response(prompt):\n    try:\n        url = \"https://api-inference.huggingface.co/models/gpt2\"\n        headers = {\"Accept\": \"application/json\"}\n        payload = {\"inputs\": prompt}\n        response = requests.post(url, headers=headers, json=payload, timeout=10)\n        data = response.json()\n        return data[0][\"generated_text\"]\n    except Exception as e:\n        return f\"⚠️ GPT Error: {str(e)}\"",
         "detail": "main",
         "documentation": {}
     },
@@ -47,7 +56,16 @@
         "kind": 2,
         "importPath": "main",
         "description": "main",
-        "peekOfCode": "def catch_all(path):\n    full_url = request.url\n    send_telegram_message(f\"🌐 Someone accessed: {full_url}\")\n    return f\"✅ Access logged and reported to Telegram.\\n\\n{full_url}\"\nif __name__ == \"__main__\":\n    port = int(os.environ.get(\"PORT\", 5000))  # Get the port from environment\n    app.run(host=\"0.0.0.0\", port=port)",
+        "peekOfCode": "def catch_all(path):\n    full_url = request.url\n    send_telegram_message(CHAT_ID, f\"🌐 Someone accessed: {full_url}\")\n    return f\"✅ Access logged and reported to Telegram.\\n\\n{full_url}\"\n# ✅ Telegram webhook for replies\n@app.route(\"/webhook\", methods=[\"POST\"])\ndef telegram_webhook():\n    data = request.get_json()\n    if \"message\" in data and \"text\" in data[\"message\"]:\n        user_message = data[\"message\"][\"text\"]",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "telegram_webhook",
+        "kind": 2,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "def telegram_webhook():\n    data = request.get_json()\n    if \"message\" in data and \"text\" in data[\"message\"]:\n        user_message = data[\"message\"][\"text\"]\n        chat_id = data[\"message\"][\"chat\"][\"id\"]\n        reply = generate_gpt_response(user_message)\n        send_telegram_message(chat_id, reply)\n    return {\"ok\": True}\nif __name__ == \"__main__\":\n    port = int(os.environ.get(\"PORT\", 5000))",
         "detail": "main",
         "documentation": {}
     },
@@ -56,7 +74,7 @@
         "kind": 5,
         "importPath": "main",
         "description": "main",
-        "peekOfCode": "app = Flask(__name__)\nBOT_TOKEN = \"YOUR_NEW_BOT_TOKEN\"\nCHAT_ID = \"7539943162\"\ndef send_telegram_message(message):\n    url = f\"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage\"\n    data = {\n        \"chat_id\": CHAT_ID,\n        \"text\": message\n    }\n    requests.post(url, data=data)",
+        "peekOfCode": "app = Flask(__name__)\nBOT_TOKEN = \"7395726596:AAFjoArLIaBDYw8SodM9QGT_Prv1rO8rGoE\"\nCHAT_ID = \"7539943162\"\n# ✅ Send message via Telegram\ndef send_telegram_message(chat_id, message):\n    url = f\"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage\"\n    data = {\"chat_id\": chat_id, \"text\": message}\n    requests.post(url, data=data)\n# ✅ Call Hugging Face GPT-2 model for a response\ndef generate_gpt_response(prompt):",
         "detail": "main",
         "documentation": {}
     },
@@ -65,7 +83,7 @@
         "kind": 5,
         "importPath": "main",
         "description": "main",
-        "peekOfCode": "BOT_TOKEN = \"YOUR_NEW_BOT_TOKEN\"\nCHAT_ID = \"7539943162\"\ndef send_telegram_message(message):\n    url = f\"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage\"\n    data = {\n        \"chat_id\": CHAT_ID,\n        \"text\": message\n    }\n    requests.post(url, data=data)\n@app.route(\"/\", defaults={'path': ''})",
+        "peekOfCode": "BOT_TOKEN = \"7395726596:AAFjoArLIaBDYw8SodM9QGT_Prv1rO8rGoE\"\nCHAT_ID = \"7539943162\"\n# ✅ Send message via Telegram\ndef send_telegram_message(chat_id, message):\n    url = f\"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage\"\n    data = {\"chat_id\": chat_id, \"text\": message}\n    requests.post(url, data=data)\n# ✅ Call Hugging Face GPT-2 model for a response\ndef generate_gpt_response(prompt):\n    try:",
         "detail": "main",
         "documentation": {}
     },
@@ -74,7 +92,7 @@
         "kind": 5,
         "importPath": "main",
         "description": "main",
-        "peekOfCode": "CHAT_ID = \"7539943162\"\ndef send_telegram_message(message):\n    url = f\"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage\"\n    data = {\n        \"chat_id\": CHAT_ID,\n        \"text\": message\n    }\n    requests.post(url, data=data)\n@app.route(\"/\", defaults={'path': ''})\n@app.route(\"/<path:path>\")",
+        "peekOfCode": "CHAT_ID = \"7539943162\"\n# ✅ Send message via Telegram\ndef send_telegram_message(chat_id, message):\n    url = f\"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage\"\n    data = {\"chat_id\": chat_id, \"text\": message}\n    requests.post(url, data=data)\n# ✅ Call Hugging Face GPT-2 model for a response\ndef generate_gpt_response(prompt):\n    try:\n        url = \"https://api-inference.huggingface.co/models/gpt2\"",
         "detail": "main",
         "documentation": {}
     }

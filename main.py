@@ -4,24 +4,49 @@ import requests
 
 app = Flask(__name__)
 
-BOT_TOKEN = "YOUR_NEW_BOT_TOKEN"
+BOT_TOKEN = "7395726596:AAFjoArLIaBDYw8SodM9QGT_Prv1rO8rGoE"
 CHAT_ID = "7539943162"
 
-def send_telegram_message(message):
+# ✅ Send message via Telegram
+def send_telegram_message(chat_id, message):
     url = f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage"
-    data = {
-        "chat_id": CHAT_ID,
-        "text": message
-    }
+    data = {"chat_id": chat_id, "text": message}
     requests.post(url, data=data)
 
+# ✅ Call Hugging Face GPT-2 model for a response
+def generate_gpt_response(prompt):
+    try:
+        url = "https://api-inference.huggingface.co/models/gpt2"
+        headers = {"Accept": "application/json"}
+        payload = {"inputs": prompt}
+        response = requests.post(url, headers=headers, json=payload, timeout=10)
+        data = response.json()
+        return data[0]["generated_text"]
+    except Exception as e:
+        return f"⚠️ GPT Error: {str(e)}"
+
+# ✅ When URL is accessed
 @app.route("/", defaults={'path': ''})
 @app.route("/<path:path>")
 def catch_all(path):
     full_url = request.url
-    send_telegram_message(f"🌐 Someone accessed: {full_url}")
+    send_telegram_message(CHAT_ID, f"🌐 Someone accessed: {full_url}")
     return f"✅ Access logged and reported to Telegram.\n\n{full_url}"
 
+# ✅ Telegram webhook for replies
+@app.route("/webhook", methods=["POST"])
+def telegram_webhook():
+    data = request.get_json()
+
+    if "message" in data and "text" in data["message"]:
+        user_message = data["message"]["text"]
+        chat_id = data["message"]["chat"]["id"]
+
+        reply = generate_gpt_response(user_message)
+        send_telegram_message(chat_id, reply)
+
+    return {"ok": True}
+
 if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 5000))  # Get the port from environment
-    app.run(host="0.0.0.0", port=port)  
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host="0.0.0.0", port=port)
