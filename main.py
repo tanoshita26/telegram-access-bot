@@ -1,4 +1,3 @@
-import os
 from flask import Flask, request
 import requests
 
@@ -48,5 +47,12 @@ def telegram_webhook():
     return {"ok": True}
 
 if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 5000))
+    # Render sets PORT environment variable automatically — Flask uses port 5000 by default
+    from sys import argv
+    port = 5000
+    if len(argv) > 1:
+        try:
+            port = int(argv[1])
+        except:
+            pass
     app.run(host="0.0.0.0", port=port)

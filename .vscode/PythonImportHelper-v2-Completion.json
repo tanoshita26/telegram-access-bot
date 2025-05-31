@@ -1,14 +1,5 @@
 [
     {
-        "label": "os",
-        "kind": 6,
-        "isExtraImport": true,
-        "importPath": "os",
-        "description": "os",
-        "detail": "os",
-        "documentation": {}
-    },
-    {
         "label": "Flask",
         "importPath": "flask",
         "description": "flask",
@@ -65,7 +56,7 @@
         "kind": 2,
         "importPath": "main",
         "description": "main",
-        "peekOfCode": "def telegram_webhook():\n    data = request.get_json()\n    if \"message\" in data and \"text\" in data[\"message\"]:\n        user_message = data[\"message\"][\"text\"]\n        chat_id = data[\"message\"][\"chat\"][\"id\"]\n        reply = generate_gpt_response(user_message)\n        send_telegram_message(chat_id, reply)\n    return {\"ok\": True}\nif __name__ == \"__main__\":\n    port = int(os.environ.get(\"PORT\", 5000))",
+        "peekOfCode": "def telegram_webhook():\n    data = request.get_json()\n    if \"message\" in data and \"text\" in data[\"message\"]:\n        user_message = data[\"message\"][\"text\"]\n        chat_id = data[\"message\"][\"chat\"][\"id\"]\n        reply = generate_gpt_response(user_message)\n        send_telegram_message(chat_id, reply)\n    return {\"ok\": True}\nif __name__ == \"__main__\":\n    # Render sets PORT environment variable automatically — Flask uses port 5000 by default",
         "detail": "main",
         "documentation": {}
     },

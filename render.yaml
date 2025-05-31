@@ -2,6 +2,6 @@ services:
   - type: web
     name: telegram-access-alert
     runtime: python
-    buildCommand: "pip install --upgrade pip && pip install -r requirements.txt"
+    buildCommand: "pip install -r requirements.txt"
     startCommand: "python main.py"
     plan: free
