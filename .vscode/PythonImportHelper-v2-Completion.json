@@ -1,0 +1,72 @@
+[
+    {
+        "label": "Flask",
+        "importPath": "flask",
+        "description": "flask",
+        "isExtraImport": true,
+        "detail": "flask",
+        "documentation": {}
+    },
+    {
+        "label": "request",
+        "importPath": "flask",
+        "description": "flask",
+        "isExtraImport": true,
+        "detail": "flask",
+        "documentation": {}
+    },
+    {
+        "label": "requests",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "requests",
+        "description": "requests",
+        "detail": "requests",
+        "documentation": {}
+    },
+    {
+        "label": "send_telegram_message",
+        "kind": 2,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "def send_telegram_message(message):\n    url = f\"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage\"\n    data = {\n        \"chat_id\": CHAT_ID,\n        \"text\": message\n    }\n    requests.post(url, data=data)\n@app.route(\"/\", defaults={'path': ''})\n@app.route(\"/<path:path>\")\ndef catch_all(path):",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "catch_all",
+        "kind": 2,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "def catch_all(path):\n    full_url = request.url\n    send_telegram_message(f\"🌐 Accessed: {full_url}\")\n    return f\"OK. This access was logged and reported to Telegram.\\n{full_url}\"\nif __name__ == \"__main__\":\n    app.run(debug=True)",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "app",
+        "kind": 5,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "app = Flask(__name__)\nBOT_TOKEN = \"YOUR_NEW_BOT_TOKEN\"\nCHAT_ID = \"7539943162\"\ndef send_telegram_message(message):\n    url = f\"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage\"\n    data = {\n        \"chat_id\": CHAT_ID,\n        \"text\": message\n    }\n    requests.post(url, data=data)",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "BOT_TOKEN",
+        "kind": 5,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "BOT_TOKEN = \"YOUR_NEW_BOT_TOKEN\"\nCHAT_ID = \"7539943162\"\ndef send_telegram_message(message):\n    url = f\"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage\"\n    data = {\n        \"chat_id\": CHAT_ID,\n        \"text\": message\n    }\n    requests.post(url, data=data)\n@app.route(\"/\", defaults={'path': ''})",
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "CHAT_ID",
+        "kind": 5,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "CHAT_ID = \"7539943162\"\ndef send_telegram_message(message):\n    url = f\"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage\"\n    data = {\n        \"chat_id\": CHAT_ID,\n        \"text\": message\n    }\n    requests.post(url, data=data)\n@app.route(\"/\", defaults={'path': ''})\n@app.route(\"/<path:path>\")",
+        "detail": "main",
+        "documentation": {}
+    }
+]

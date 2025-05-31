@@ -1,0 +1,7 @@
+services:
+  - type: web
+    name: telegram-access-alert
+    runtime: python
+    buildCommand: "pip install -r requirements.txt"
+    startCommand: "python main.py"
+    plan: free
